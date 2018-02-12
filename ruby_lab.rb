@@ -31,6 +31,7 @@ def process_file(file_name)
 				title = cleanup_title line
 					if title != nil
 						addtoB(title)
+						print($bigrams)
 					end
 			end
 		end
@@ -58,8 +59,8 @@ def cleanup_title(songTitle)
 end
 
 def addtoB(title)
-	title_words = title.split(/\W+/) # splits title into various words
-	while title_words.length > 0
+	title_words = title.split(' ') # splits title into various words
+	while (title_words.length > 1)
 		first_word = title_words[0] # saves the first word to title bigram
 		title_words = title_words[1..-1]
 
@@ -68,9 +69,9 @@ def addtoB(title)
 		else
 			$bigrams[first_word] = Hash.new(0)
 		end
-	if (title_words != nil && title_words.length >= 0) # if there's nothing, then don't go in here and do anything
+		if (title_words != nil && title_words.length >= 1) # if there's nothing, then don't go in here and do anything
 			title_words.each { |word|
-				$bigrams[first_word].merge!(word => $bigrams[first_word][word]+1) # stores in bigram hash for each words
+				$bigrams[first_word].merge!(word => $bigrams[first_word][word]+1) # stores in bigram hash for each word
 			}
 		end
 	end
