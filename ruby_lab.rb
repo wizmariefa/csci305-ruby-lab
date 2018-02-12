@@ -9,7 +9,7 @@
 #
 ###############################################################
 
-$bigrams = Hash.new # The Bigram data structure
+$bigrams = Hash.new(0) # The Bigram data structure
 $name = "Marie Morin"
 
 # function to process each line of a file and extract the song titles
@@ -33,11 +33,10 @@ def process_file(file_name)
 						addtoB(title)
 					end
 			end
-			# all have been added to bigram, now I can work on the bigram itself
-			$bigrams.sort{|a,b| a[1]<=>b[1]}.each { |elem|
-  			puts "\"#{elem[0]}\" has #{elem[1]} occurrences"
-			}
 		end
+		#puts"Please Enter a Word: "
+		#search = gets.chomp
+		mcw("computer")
 
 		puts "Finished. Bigram model built.\n"
 	#rescue
@@ -59,20 +58,34 @@ end
 
 def addtoB(title)
 	title_words = title.split(/\W+/) # splits title into various words
-	first_word = title.first # saves the first word to title bigram
+	first_word = title_words[0] # saves the first word to title bigram
+	title_words = title_words[1..-1]
 
-	# nested hash?
-	title_words.each { |num|
-		if $bigrams.has_key?(num)
-			$bigrams[num] += 1
-		else
-			$bigrams[num] = 1
-		end
+	if ($bigrams.has_key?(first_word))
+		# do nothing
+	else
+		$bigrams[first_word] = Hash.new(0)
+	end
+
+	if (title_words.length > 0)
+		title_words.each { |word|
+		$bigrams[first_word].store(word, $bigrams[first_word][word]+1) # stores in bigram hash for each words
 	}
-end
+	end
 
-def mcw(title)
 
+	$bigrams.each { |key, value|
+				puts "#{key} : #{value}"
+				print()
+			}
+	end
+
+def mcw(search)
+	#hash.max_by{ |key,value| value }
+	search = "computer"
+	#result = $bigrams[search].values.max
+	result = $bigrams[search]
+	puts "#{result}"
 end
 
 # Executes the program
