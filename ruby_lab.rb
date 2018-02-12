@@ -30,15 +30,19 @@ def process_file(file_name)
 			IO.foreach(file_name, encoding: "utf-8") do |line|
 				title = cleanup_title line
 					if title != nil
-						#puts("#{title}")
+						addtoB(title)
 					end
 			end
+			# all have been added to bigram, now I can work on the bigram itself
+			$bigrams.sort{|a,b| a[1]<=>b[1]}.each { |elem|
+  			puts "\"#{elem[0]}\" has #{elem[1]} occurrences"
+			}
 		end
 
 		puts "Finished. Bigram model built.\n"
-	rescue
-		STDERR.puts "Could not open file"
-		exit 4
+	#rescue
+		#STDERR.puts "Could not open file"
+		#exit 4
 	end
 end
 
@@ -46,11 +50,29 @@ def cleanup_title(songTitle)
 	title = songTitle.gsub(/(.)+<SEP>/, "") # strips everything but title
 	title = title.gsub(/(([\(\[\{\\\/\_\-\:\"\`\+\=\*]|(feat\.)).*)/, "") # strips non-song title items
 	title = title.gsub(/[\?\¿\!\¡\.\;\&\@\%\#\|]/, "") # strips punctuation
-	if title =~ (/[^\x00-\x7F]+/) # eliminates non-english characters
+	if title =~ (/[^\x00-\x7F]+/) # eliminates (most) non-english titles
 		return nil
 	end
 	title = title.downcase
 	return title
+end
+
+def addtoB(title)
+	title_words = title.split(/\W+/) # splits title into various words
+	first_word = title.first # saves the first word to title bigram
+
+	# nested hash?
+	title_words.each { |num|
+		if $bigrams.has_key?(num)
+			$bigrams[num] += 1
+		else
+			$bigrams[num] = 1
+		end
+	}
+end
+
+def mcw(title)
+
 end
 
 # Executes the program
