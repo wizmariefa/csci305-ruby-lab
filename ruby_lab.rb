@@ -4,13 +4,13 @@
 #
 # CSCI 305 - Ruby Programming Lab
 #
-# <firstname> <lastname>
-# <email-address>
+# Marie Morin
+# mariecolee1@gmail.com
 #
 ###############################################################
 
 $bigrams = Hash.new # The Bigram data structure
-$name = "<firstname> <lastname>"
+$name = "Marie Morin"
 
 # function to process each line of a file and extract the song titles
 def process_file(file_name)
@@ -22,12 +22,16 @@ def process_file(file_name)
 			unless file.eof?
 				file.each_line do |line|
 					# do something for each line (if using windows)
+					# do not touch this! You have a Mac!
 				end
 			end
 			file.close
 		else
 			IO.foreach(file_name, encoding: "utf-8") do |line|
-				# do something for each line (if using macos or linux)
+				title = cleanup_title line
+					if title != nil
+						#puts("#{title}")
+					end
 			end
 		end
 
@@ -36,6 +40,17 @@ def process_file(file_name)
 		STDERR.puts "Could not open file"
 		exit 4
 	end
+end
+
+def cleanup_title(songTitle)
+	title = songTitle.gsub(/(.)+<SEP>/, "") # strips everything but title
+	title = title.gsub(/(([\(\[\{\\\/\_\-\:\"\`\+\=\*]|(feat\.)).*)/, "") # strips non-song title items
+	title = title.gsub(/[\?\¿\!\¡\.\;\&\@\%\#\|]/, "") # strips punctuation
+	if title =~ (/[^\x00-\x7F]+/) # eliminates non-english characters
+		return nil
+	end
+	title = title.downcase
+	return title
 end
 
 # Executes the program
