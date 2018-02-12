@@ -34,10 +34,11 @@ def process_file(file_name)
 					end
 			end
 		end
-		#puts"Please Enter a Word: "
-		#search = gets.chomp
-		mcw("computer")
-
+		puts "Please Enter a Word: "
+		#search = $stdin.gets.chomp
+		#if search
+			#mcw(search)
+		#end
 		puts "Finished. Bigram model built.\n"
 	#rescue
 		#STDERR.puts "Could not open file"
@@ -58,34 +59,29 @@ end
 
 def addtoB(title)
 	title_words = title.split(/\W+/) # splits title into various words
-	first_word = title_words[0] # saves the first word to title bigram
-	title_words = title_words[1..-1]
+	while title_words.length > 0
+		first_word = title_words[0] # saves the first word to title bigram
+		title_words = title_words[1..-1]
 
-	if ($bigrams.has_key?(first_word))
-		# do nothing
-	else
-		$bigrams[first_word] = Hash.new(0)
-	end
-
-	if (title_words.length > 0)
-		title_words.each { |word|
-		$bigrams[first_word].store(word, $bigrams[first_word][word]+1) # stores in bigram hash for each words
-	}
-	end
-
-
-	$bigrams.each { |key, value|
-				puts "#{key} : #{value}"
-				print()
+		if ($bigrams.has_key?(first_word))
+			# do nothing
+		else
+			$bigrams[first_word] = Hash.new(0)
+		end
+	if (title_words != nil && title_words.length >= 0) # if there's nothing, then don't go in here and do anything
+			title_words.each { |word|
+				$bigrams[first_word].merge!(word => $bigrams[first_word][word]+1) # stores in bigram hash for each words
 			}
+		end
 	end
+end
 
 def mcw(search)
-	#hash.max_by{ |key,value| value }
-	search = "computer"
-	#result = $bigrams[search].values.max
-	result = $bigrams[search]
-	puts "#{result}"
+	if ($bigrams.has_key?(search))
+		max = $bigrams[search].max_by{|word, number| number} # search for max by # of maxes
+		return max[0]
+	else puts "Invalid query, please enter a new value."
+	end
 end
 
 # Executes the program
