@@ -1,24 +1,41 @@
-Your name
+Marie Morin
 CSCI-305
 
-10.
+10. "is a little girl in the world" ... kinda weird. A lot of words turn into a long loop, instead of
+    stopping the title
 
-14.
+14. Because a lot of them have the same following words, and are very common words. One thing I noticed: I
+    have basically the correct answer for part 12, however, I am missing one space.
 
-15.
+15. Ominous: Created the title "Ominous Lamentation"
 
-16.
+16. Honestly, by the time I got to this point I was extremely tired and had to get to bed for an early morning.
+    I understand that I'm going to get two points off here, but I know that if words start duplicating (i.e.
+    the word already exists in the array), then we break out of the while loop and return the title.
 
-19.
+17. montana sacra nova baby i don't know what you are you are you are you are you are you are
 
-20.
+18. bob marley vs me down south side story short fuse box blues away inmanger with you are you are you
 
-21.
+19. Nope, I get the exact same answer. This could vary, however, when we randomly choose the next highest word
+    to jump to, if we have two or more words occurring the same highest amount of times.
 
-22.
+20. "Stop Masturbating"
 
-23.
+21. I like almost nothing, except the regular expressions look cool. Honestly, this lab was incredibly
+    aggravating for me.
 
-24.
+22. I don't like that the regular expressions were so hard for me to figure out-- or that there aren't
+    any for loops! I love me my for loops (and threw one in at the end because I just wanted to be done.)
 
-25.
+23. Not particularly. However, this may be my own fault, as I did not start it nearly as soon as
+    I should have. I enjoyed learning a new language, but would have enjoyed a series of smaller projects
+    much more.
+
+24. I spent a good 10-12 hours on this lab. I messed up on my understanding of the bigrams section, and spent
+    much longer than I should have figuring out why I was having such a hard time. It took someone else looking
+    at my code to figure out I was interpreting the assignment incorrectly.
+
+25. Probably. It would be fun to write some Homebrew scrips, since those are all written in Ruby.
+    I don't know a whole lot about the language, but I'm looking forward to making some personal projects
+    so that I actually enjoy using it.
