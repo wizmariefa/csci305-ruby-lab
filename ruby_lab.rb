@@ -36,21 +36,24 @@ def process_file(file_name)
 		end
 
 		search = ""
-		while search != "q"
-			puts("Enter a word [Enter 'q' to quit]:")
-			search = $stdin.gets.chomp
-			if (search != "q")
-				print(create_title(search))
-			end
-			puts ""
-		end
+#		while search != "q" # continues while user doesn't enter 1
+#			puts("Enter a word [Enter 'q' to quit]:") # prompts for user input
+#			search = $stdin.gets.chomp # get input from user
+#			if (search != "q") # if they typed in q, we don't want to create a title
+#				print(create_title(search)) # creates and prints title
+#			end
+#			puts "" # extra line for prettiness! ~
+#		end
 	end
 		puts "Finished. Bigram model built.\n"
-	#rescue
-		#STDERR.puts "Could not open file"
-		#exit
+	rescue
+		STDERR.puts "Could not open file"
+		exit
 	end
 
+# This method "cleans up" the title. In here, we remove the preceding characters,
+# the additional characters that don't make up song titles but are present, strip
+# all punctuation, and remove titles with non-english characters.
 def cleanup_title(songTitle)
 	title = songTitle.gsub(/(.)+<SEP>/, "") # strips everything but title
 	title = title.gsub(/(([\(\[\{\\\/\_\-\:\"\`\+\=\*]|(feat\.)).*)/, "") # strips non-song title items
@@ -58,40 +61,48 @@ def cleanup_title(songTitle)
 	if title =~ (/[^\x00-\x7F]+/) # eliminates (most) non-english titles
 		return nil
 	end
-	title = title.downcase
+	title = title.downcase # converts title to lowercase
 	return title
 end
 
+# In this function, we add the title to the bigram. We do this by adding the first word
+# and creating its own hash, and adding the words that come directly after to its own
+# hash map. We do this for every word that appears in the title, adding only the word
+# following directly after. This tripped me up at first, as i tried adding every word
+# behind the current word for the entire sentence.
 def addtoB(title)
 	#title = "let's see what this is doing"
-	stops = [" a ", " an ", " and ", " by ", " for ", " from ", " in ", " of ", " on ", " or ", " out ", " the ", " to ", " width "]
-	for word in stops do
-			title = title.gsub(word, "") # changes word to NOTHING!
+	stops = [" a ", " an ", " and ", " by ", " for ", " from ", " in ", " of ", " on ", " or ", " out ", " the ", " to ", " width "] # list of stop words
+	for word in stops do # go through the stop words: if they exist in the sentence, we will...
+			title = title.gsub(word, " ") # changes word to NOTHING! Well, a space I guess. but still.
 		end
 
 	title_words = title.split(" ") # splits title into various words
 
 	while (title_words.length > 1)
 		first_word = title_words[0] # saves the first word to title bigram
-		next_wrd = title_words[1]
-		title_words = title_words[1..-1]
+		next_wrd = title_words[1] # the next word in the title is the one we want to add
+		title_words = title_words[1..-1] # chops off the first word and proceeds through
 
-		if ($bigrams.has_key?(first_word))
+		if ($bigrams.has_key?(first_word)) # if we already have a key, we don't need a new hash
 			# do nothing
 		else
-			$bigrams[first_word] = Hash.new
+			$bigrams[first_word] = Hash.new # if word hasn't been encountered before, give it a new hash
 		end
-				if ($bigrams[first_word].has_key?(next_wrd))
-					$bigrams[first_word][next_wrd] = $bigrams[first_word][next_wrd] + 1
+				if ($bigrams[first_word].has_key?(next_wrd)) # if the next word exists for the current word...
+					$bigrams[first_word][next_wrd] = $bigrams[first_word][next_wrd] + 1 # then all we're doing is incrementing the count for that word by one.
 				else
-				$bigrams[first_word].merge!(next_wrd => 1)
+				$bigrams[first_word].merge!(next_wrd => 1) # otherwise, we will set the count of that word to one.
 			end
 		end
 	end
 
+# this function finds the most common following word, if the word exists in the
+# bigram hash map. If not, it returns nil and breaks out of the title consruction
+# while loop.
 def mcw(search)
-		if !$bigrams.has_key?(search)
-			most_common = nil
+		if !$bigrams.has_key?(search) # if the search word doesn't exist in the bigram...
+			most_common = nil # we're going to return nil.
 
 		else most_common = $bigrams[search].max_by{|word, number| number}[0] # search for max by # of maxes
 		end
@@ -99,11 +110,13 @@ def mcw(search)
 		return most_common
 end
 
+# This function creates a song title beginning with a given word, based on the return
+# values of the MCW function above. IT doesn't allow for titles longer than 20 words.
 def create_title(word)
 	current = word
-	word_num = 1
-	title = ""
-	title += word
+	word_num = 1 # begin word number at one
+	title = "" # title begins as empty
+	title += word # add current word
 	while word_num !=20 # while we have less than 20 words...
 			if ($bigrams.has_key?(current)) # if the word exists in the bigram
 				if (mcw(current) == nil)
@@ -111,12 +124,12 @@ def create_title(word)
 					word_num = 20
 				else
 					addition = mcw(current) # thing to add is mcw
-					title += " "
-					title += addition
+					title += " " # add space for readability
+					title += addition # add addition to the title
 					current = addition # set current to the new wordtitle += addition # add the mcw
 					word_num += 1 # increment by one and then go throuh
 				end
-			else word_num = 20
+			else word_num = 20 # otherwise, we exit
 			end
 		end
 		return title

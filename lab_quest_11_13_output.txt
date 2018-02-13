@@ -1,30 +1,5 @@
-[31mF[0m[32m.[0m[31mF[0m
+[32m.[0m[32m.[0m[32m.[0m
 
-Failures:
-
-  1) Lab Questions Check unique_tracks with stop words removed 11. Song title starting with 'amore'
-     [31mFailure/Error: expect(create_title('amore').rstrip()).to eq('amore mio babbino caro gianni schicchi')[0m
-     [31m[0m
-     [31m  expected: "amore mio babbino caro gianni schicchi"[0m
-     [31m       got: "amore mio babbino carogianni schicchi"[0m
-     [31m[0m
-     [31m  (compared using ==)[0m
-     [36m# ./spec/lab_quest_11_13_spec.rb:8:in `block (3 levels) in <top (required)>'[0m
-
-  2) Lab Questions Check unique_tracks with stop words removed 13. Song title starting with 'little'
-     [31mFailure/Error: expect(create_title('little').rstrip()).to eq('little girl like you are you are you are you are you are you are you are you are you')[0m
-     [31m[0m
-     [31m  expected: "little girl like you are you are you are you are you are you are you are you are you"[0m
-     [31m       got: "little girl i don't know what you are you are you are you are you are you are you are"[0m
-     [31m[0m
-     [31m  (compared using ==)[0m
-     [36m# ./spec/lab_quest_11_13_spec.rb:16:in `block (3 levels) in <top (required)>'[0m
-
-Finished in 0.03686 seconds (files took 31.34 seconds to load)
-[31m3 examples, 2 failures[0m
-
-Failed examples:
-
-[31mrspec ./spec/lab_quest_11_13_spec.rb:7[0m [36m# Lab Questions Check unique_tracks with stop words removed 11. Song title starting with 'amore'[0m
-[31mrspec ./spec/lab_quest_11_13_spec.rb:15[0m [36m# Lab Questions Check unique_tracks with stop words removed 13. Song title starting with 'little'[0m
+Finished in 0.05961 seconds (files took 30.75 seconds to load)
+[32m3 examples, 0 failures[0m
 
