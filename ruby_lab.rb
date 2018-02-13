@@ -9,7 +9,7 @@
 #
 ###############################################################
 
-$bigrams = Hash.new(0) # The Bigram data structure
+$bigrams = Hash.new # The Bigram data structure
 $name = "Marie Morin"
 
 # function to process each line of a file and extract the song titles
@@ -31,15 +31,14 @@ def process_file(file_name)
 				title = cleanup_title line
 					if title != nil
 						addtoB(title)
-						print($bigrams)
 					end
 			end
 		end
-		puts "Please Enter a Word: "
 		#search = $stdin.gets.chomp
 		#if search
 			#mcw(search)
 		#end
+		mcw("love")
 		puts "Finished. Bigram model built.\n"
 	#rescue
 		#STDERR.puts "Could not open file"
@@ -59,32 +58,37 @@ def cleanup_title(songTitle)
 end
 
 def addtoB(title)
-	title_words = title.split(' ') # splits title into various words
+	#title = "let's see what this is doing"
+	title_words = title.split(" ") # splits title into various words
 	while (title_words.length > 1)
 		first_word = title_words[0] # saves the first word to title bigram
+		next_wrd = title_words[1]
 		title_words = title_words[1..-1]
 
 		if ($bigrams.has_key?(first_word))
 			# do nothing
 		else
-			$bigrams[first_word] = Hash.new(0)
+			$bigrams[first_word] = Hash.new
 		end
-		if (title_words != nil && title_words.length >= 1) # if there's nothing, then don't go in here and do anything
-			title_words.each { |word|
-				$bigrams[first_word].merge!(word => $bigrams[first_word][word]+1) # stores in bigram hash for each word
-			}
-		end
+				if ($bigrams[first_word].has_key?(next_wrd))
+					$bigrams[first_word][next_wrd] = $bigrams[first_word][next_wrd] + 1
+				else
+				$bigrams[first_word].merge!(next_wrd => 1)
+			end
 	end
 end
 
 def mcw(search)
-	if ($bigrams.has_key?(search))
-		max = $bigrams[search].max_by{|word, number| number} # search for max by # of maxes
-		return max[0]
-	else puts "Invalid query, please enter a new value."
-	end
+		if !$bigrams.has_key?(search)
+			puts "Error. Key does not exist"
+
+		else return $bigrams[search].max_by{|word, number| number}[0] # search for max by # of maxes
+		end
 end
 
+def create_title(word)
+
+end
 # Executes the program
 def main_loop()
 	puts "CSCI 305 Ruby Lab submitted by #{$name}"
